@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useCallback, useLayoutEffect } from 'react'
 import { BookingConfirmationScreenProps } from '../types/Navigation'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { Theme } from '../theme/theme'
@@ -22,23 +22,7 @@ const BookingConfirmationScreen = ({
   const dispatch = useAppDispatch()
   const doctor = useAppSelector((state) => useDoctorByIdSelector(state, id))
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <Pressable onPress={() => navigation.goBack()}>
-          <Ionicons name='close' size={24} color={Theme.colors.text} />
-        </Pressable>
-      ),
-
-      headerRight: () => (
-        <Pressable onPress={onConfirmPress}>
-          <Ionicons name='checkmark' size={24} color={Theme.colors.text} />
-        </Pressable>
-      ),
-    })
-  }, [])
-
-  const onConfirmPress = () => {
+  const onConfirmPress = useCallback(() => {
     if (!doctor) return
 
     dispatch(
@@ -61,12 +45,28 @@ const BookingConfirmationScreen = ({
         routes: [{ name: 'Bookings' }],
       })
     )
-  }
+  }, [dispatch, doctor, date, startTime, endTime])
 
   const formattedTime = format(
     new TZDate(`${date} ${startTime}`, doctor?.timezone),
     'hh:mm a z'
   )
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Pressable onPress={() => navigation.goBack()}>
+          <Ionicons name='close' size={24} color={Theme.colors.text} />
+        </Pressable>
+      ),
+
+      headerRight: () => (
+        <Pressable onPress={onConfirmPress}>
+          <Ionicons name='checkmark' size={24} color={Theme.colors.text} />
+        </Pressable>
+      ),
+    })
+  }, [onConfirmPress])
 
   return (
     <View

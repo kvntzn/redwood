@@ -5,6 +5,7 @@ import DoctorCard from '../components/DoctorCard'
 import { Theme } from '../theme/theme'
 import { Doctor } from '../types/Doctor'
 import { DoctorsListScreenProps } from '../types/Navigation'
+import Separator from '../components/Separator'
 
 const DoctorsListScreen = ({ navigation }: DoctorsListScreenProps) => {
   const { data, isLoading, isFetching, refetch } = useGetDoctorsQuery()
@@ -22,6 +23,8 @@ const DoctorsListScreen = ({ navigation }: DoctorsListScreenProps) => {
     />
   )
 
+  const renderSeparator = () => <Separator />
+
   return (
     <FlatList
       data={data}
@@ -33,17 +36,10 @@ const DoctorsListScreen = ({ navigation }: DoctorsListScreenProps) => {
           onRefresh={refetch}
         />
       }
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      ItemSeparatorComponent={renderSeparator}
       contentInsetAdjustmentBehavior='automatic'
     />
   )
 }
 
 export default DoctorsListScreen
-
-const styles = StyleSheet.create({
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: Theme.colors.border,
-  },
-})

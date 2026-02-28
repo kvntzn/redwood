@@ -7,6 +7,7 @@ import { useAppSelector } from '../store/hooks'
 import BookingCard from '../components/BookingCard'
 import { TZDate } from '@date-fns/tz'
 import { format } from 'date-fns'
+import Separator from '../components/Separator'
 
 const MyBookingsScreen = () => {
   const bookings = useAppSelector(useBookingsSelector)
@@ -31,6 +32,8 @@ const MyBookingsScreen = () => {
       {title}
     </Text>
   )
+
+  const renderSeparator = () => <Separator />
 
   const sectionedBookings = useMemo(() => {
     return bookings.reduce((sections, booking) => {
@@ -59,17 +62,10 @@ const MyBookingsScreen = () => {
       keyExtractor={(item, index) => `${item.id}-${index}`}
       renderItem={renderItem}
       renderSectionHeader={renderHeader}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      ItemSeparatorComponent={renderSeparator}
       contentInsetAdjustmentBehavior='automatic'
     />
   )
 }
 
 export default MyBookingsScreen
-
-const styles = StyleSheet.create({
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: Theme.colors.border,
-  },
-})
