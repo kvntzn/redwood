@@ -5,6 +5,8 @@ import BookingConfirmationScreen from '../screens/BookingConfirmationScreen'
 import DoctorDetailScreen from '../screens/DoctorDetailScreen'
 import DoctorsListScreen from '../screens/DoctorsListScreen'
 import MyBookingsScreen from '../screens/MyBookingsScreen'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { NavigationTheme, Theme } from '../theme/theme'
 
 const Tab = createNativeBottomTabNavigator()
 
@@ -16,7 +18,16 @@ const HomeStack = () => {
       <Stack.Screen
         name='Doctors List'
         component={DoctorsListScreen}
-        options={{ headerLargeTitleEnabled: true, headerTitle: 'Doctors' }}
+        options={{
+          headerLargeTitleEnabled: true,
+          headerTitle: 'Doctors',
+          headerLargeTitleStyle: {
+            color: '#000',
+          },
+          headerLargeStyle: {
+            // backgroundColor: '#fff',
+          },
+        }}
       />
       <Stack.Screen name='Doctors Detail' component={DoctorDetailScreen} />
       <Stack.Screen
@@ -62,8 +73,10 @@ const RootStack = () => {
 
 export default function Navigation() {
   return (
-    <NavigationContainer>
-      <RootStack />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer theme={NavigationTheme}>
+        <RootStack />
+      </NavigationContainer>
+    </SafeAreaProvider>
   )
 }
