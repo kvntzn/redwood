@@ -1,10 +1,16 @@
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import { BookingConfirmationScreenProps } from '../types/Navigation'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { Theme } from '../theme/theme'
-// import { useAppDispatch } from '../store/hooks'
+import { useAppDispatch } from '../store/hooks'
 import { CommonActions } from '@react-navigation/native'
+import { useAppSelector } from '../store/hooks'
+import { useDoctorByIdSelector } from '../store/slices/doctors/doctorSelector'
+import { addBooking } from '../store/slices/booking/bookingSlice'
+import { format } from 'date-fns'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { TZDate } from '@date-fns/tz'
 
 const BookingConfirmationScreen = ({
   route,
@@ -12,15 +18,9 @@ const BookingConfirmationScreen = ({
 }: BookingConfirmationScreenProps) => {
   const { id, date, startTime, endTime } = route.params
 
-  // const dispatch = useAppDispatch()
-  const onConfirmPress = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'Bookings' }],
-      })
-    )
-  }
+  const insets = useSafeAreaInsets()
+  const dispatch = useAppDispatch()
+  const doctor = useAppSelector((state) => useDoctorByIdSelector(state, id))
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -38,18 +38,74 @@ const BookingConfirmationScreen = ({
     })
   }, [])
 
+  const onConfirmPress = () => {
+    if (!doctor) return
+
+    dispatch(
+      addBooking({
+        id: `${doctor.id}-${date}-${startTime}`,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        doctor: {
+          id: doctor.id,
+          name: doctor.name,
+          timezone: doctor.timezone,
+        },
+      })
+    )
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Bookings' }],
+      })
+    )
+  }
+
+  const formattedTime = format(
+    new TZDate(`${date} ${startTime}`, doctor?.timezone),
+    'hh:mm a z'
+  )
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Doctor: {id}</Text>
-      <Text>
-        Date: {date} {startTime}-{endTime}
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop: insets.top + Theme.spacing.medium,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          Theme.typography.body,
+          {
+            alignItems: 'center',
+            textAlign: 'center',
+          },
+        ]}
+      >
+        Would you like to proceed and schedule with Dr. {doctor?.name} on{' '}
+        {format(new Date(date), 'MMMM do, yyyy')} at {formattedTime}?
       </Text>
 
-      <Button title='Confirm Booking' onPress={onConfirmPress} />
+      <Text style={Theme.typography.subheader}>Doctor: {doctor?.name}</Text>
+      <Text style={Theme.typography.body}>
+        Date: {format(new Date(date), 'MMMM do, yyyy')}
+      </Text>
+      <Text style={Theme.typography.body}>Time: {formattedTime}</Text>
     </View>
   )
 }
 
 export default BookingConfirmationScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    gap: Theme.spacing.medium,
+    padding: Theme.spacing.medium,
+  },
+})

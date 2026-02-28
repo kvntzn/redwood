@@ -1,6 +1,6 @@
 import { FlatList, RefreshControl, StyleSheet, View } from 'react-native'
 import React from 'react'
-import { useGetDoctorsQuery } from '../store/doctorsApi'
+import { useGetDoctorsQuery } from '../store/apis/doctorsApi'
 import DoctorCard from '../components/DoctorCard'
 import { Theme } from '../theme/theme'
 import { Doctor } from '../types/Doctor'

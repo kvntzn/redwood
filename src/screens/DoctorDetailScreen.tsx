@@ -1,7 +1,6 @@
-import { Alert, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import { DoctorDetailScreenProps } from '../types/Navigation'
-import { useGetDoctorsQuery } from '../store/doctorsApi'
 import { Theme } from '../theme/theme'
 import {
   TimelineList,
@@ -11,16 +10,14 @@ import {
 } from 'react-native-calendars'
 import { set, addMinutes, format } from 'date-fns'
 import { getUnavailableDays, getUnavailableHours } from '../helpers/timeHelper'
-import { useAppDispatch } from '../store/hooks'
+import { useAppSelector } from '../store/hooks'
+import { useDoctorByIdSelector } from '../store/slices/doctors/doctorSelector'
 
 const today = new Date().toISOString().split('T')[0]
 
 const DoctorDetailScreen = ({ route, navigation }: DoctorDetailScreenProps) => {
   const { id } = route.params
-
-  const dispatch = useAppDispatch()
-  const { data } = useGetDoctorsQuery()
-  const doctor = data?.find((doc) => doc.id === id)!
+  const doctor = useAppSelector((state) => useDoctorByIdSelector(state, id))
 
   const [selectedDate, setSelectedDate] = useState(today)
   const [selectedTime, setSelectedTime] = useState<{
@@ -56,26 +53,11 @@ const DoctorDetailScreen = ({ route, navigation }: DoctorDetailScreenProps) => {
     //     { text: 'Cancel', onPress: () => setSelectedTime(null) },
     //     {
     //       text: 'Confirm',
-    //       onPress: () => {
-    //         // dispatch(
-    //         //   addBooking({
-    //         //     id: `${doctor.id}-${selectedDate}-${start}`,
-    //         //     date: selectedDate,
-    //         //     startTime: start,
-    //         //     endTime: end,
-    //         //     doctor: {
-    //         //       id: doctor.id,
-    //         //       name: doctor.name,
-    //         //       timezone: doctor.timezone,
-    //         //     },
-    //         //   })
-    //         // )
-    //       },
     //     },
     //   ]
     // )
     navigation.navigate('Booking Confirmation', {
-      id: `${doctor.id}-${selectedDate}-${start}`,
+      id: doctor?.id ?? '',
       date: selectedDate,
       startTime: start,
       endTime: end,
@@ -87,8 +69,8 @@ const DoctorDetailScreen = ({ route, navigation }: DoctorDetailScreenProps) => {
   }
 
   const unavailableDays = useMemo(() => {
-    return getUnavailableDays(doctor.schedule)
-  }, [doctor.schedule])
+    return getUnavailableDays(doctor?.schedule ?? [])
+  }, [doctor?.schedule])
 
   const timelineProps = useMemo(() => {
     const day = format(selectedDate, 'EEEE')

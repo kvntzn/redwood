@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { DoctorAvailability } from '../types/DoctorAvailability'
-import { Doctor } from '../types/Doctor'
-import { transformDoctorsResponse } from '../helpers/reduxHelper'
+import { DoctorAvailability } from '../../types/DoctorAvailability'
+import { Doctor } from '../../types/Doctor'
+import { transformDoctorsResponse } from '../../helpers/reduxHelper'
 
 export const doctorsApi = createApi({
   reducerPath: 'doctorsApi',

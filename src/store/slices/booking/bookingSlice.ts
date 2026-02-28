@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Booking } from '../types/Booking'
+import { Booking } from '../../../types/Booking'
 
 type BookingState = {
   bookings: Booking[]
