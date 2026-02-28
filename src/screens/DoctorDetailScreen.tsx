@@ -11,12 +11,15 @@ import {
 } from 'react-native-calendars'
 import { set, addMinutes, format } from 'date-fns'
 import { getUnavailableDays, getUnavailableHours } from '../helpers/timeHelper'
+import { useAppDispatch } from '../store/hooks'
+import { addBooking } from '../store/bookingSlice'
 
 const today = new Date().toISOString().split('T')[0]
 
 const DoctorDetailScreen = ({ route }: DoctorDetailScreenProps) => {
   const { id } = route.params
 
+  const dispatch = useAppDispatch()
   const { data } = useGetDoctorsQuery()
   const doctor = data?.find((doc) => doc.id === id)!
 
@@ -55,9 +58,18 @@ const DoctorDetailScreen = ({ route }: DoctorDetailScreenProps) => {
         {
           text: 'Confirm',
           onPress: () => {
-            Alert.alert(
-              'Confirmed',
-              `Your appointment with Dr. ${doctor?.name} is confirmed for ${selectedDate} at ${formattedStart}.`
+            dispatch(
+              addBooking({
+                id: `${doctor.id}-${selectedDate}-${start}`,
+                date: selectedDate,
+                startTime: start,
+                endTime: end,
+                doctor: {
+                  id: doctor.id,
+                  name: doctor.name,
+                  timezone: doctor.timezone,
+                },
+              })
             )
           },
         },
