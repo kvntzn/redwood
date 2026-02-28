@@ -5,7 +5,6 @@ import { Booking } from '../types/Booking'
 import { useBookingsSelector } from '../store/slices/booking/bookingSelector'
 import { useAppSelector } from '../store/hooks'
 import BookingCard from '../components/BookingCard'
-import { TZDate } from '@date-fns/tz'
 import { format } from 'date-fns'
 import Separator from '../components/Separator'
 
@@ -37,13 +36,7 @@ const MyBookingsScreen = () => {
 
   const sectionedBookings = useMemo(() => {
     return bookings.reduce((sections, booking) => {
-      const date = format(
-        new TZDate(
-          `${booking.date}T${booking.startTime}:00`,
-          booking.doctor.timezone
-        ),
-        'MMM do, yyyy'
-      )
+      const date = format(new Date(booking.date), 'MMM do, yyyy')
 
       const existingSection = sections.find((s) => s.title === date)
       if (existingSection) {

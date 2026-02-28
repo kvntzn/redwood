@@ -10,7 +10,7 @@ import { useDoctorByIdSelector } from '../store/slices/doctors/doctorSelector'
 import { addBooking } from '../store/slices/booking/bookingSlice'
 import { format } from 'date-fns'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { TZDate } from '@date-fns/tz'
+import { tzName } from '@date-fns/tz'
 
 const BookingConfirmationScreen = ({
   route,
@@ -47,10 +47,11 @@ const BookingConfirmationScreen = ({
     )
   }, [dispatch, doctor, date, startTime, endTime])
 
-  const formattedTime = format(
-    new TZDate(`${date} ${startTime}`, doctor?.timezone),
-    'hh:mm a z'
-  )
+  const formattedDate = new Date(`${date}T${startTime}`)
+  const formattedTime = format(formattedDate, 'hh:mm a')
+  const formattedTZ = doctor?.timezone
+    ? tzName(doctor.timezone, formattedDate, 'shortGeneric')
+    : ''
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -86,14 +87,17 @@ const BookingConfirmationScreen = ({
         ]}
       >
         Would you like to proceed and schedule with Dr. {doctor?.name} on{' '}
-        {format(new Date(date), 'MMMM do, yyyy')} at {formattedTime}?
+        {format(new Date(date), 'MMMM do, yyyy')} at {formattedTime}{' '}
+        {formattedTZ}?
       </Text>
 
       <Text style={Theme.typography.subheader}>Doctor: {doctor?.name}</Text>
       <Text style={Theme.typography.body}>
         Date: {format(new Date(date), 'MMMM do, yyyy')}
       </Text>
-      <Text style={Theme.typography.body}>Time: {formattedTime}</Text>
+      <Text style={Theme.typography.body}>
+        Time: {formattedTime} {formattedTZ}
+      </Text>
     </View>
   )
 }

@@ -1,7 +1,7 @@
 import { parse, getHours, getMinutes } from 'date-fns'
 import { DayOfWeek, DoctorSchedule, DoctorShift } from '../types/DoctorSchedule'
 
-const timeToDecimal = (time: string) => {
+export const timeToDecimal = (time: string) => {
   const date = parse(time.trim(), 'h:mma', new Date())
 
   return getHours(date) + getMinutes(date) / 60

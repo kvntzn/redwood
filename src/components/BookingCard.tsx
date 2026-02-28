@@ -3,7 +3,7 @@ import React from 'react'
 import { Theme } from '../theme/theme'
 import { Booking } from '../types/Booking'
 import DoctorCard from './DoctorCard'
-import { TZDate, tzName } from '@date-fns/tz'
+import { tzName } from '@date-fns/tz'
 import { format } from 'date-fns'
 import { useAppDispatch } from '../store/hooks'
 import { cancelBooking } from '../store/slices/booking/bookingSlice'
@@ -15,10 +15,7 @@ interface BookingCardProps {
 const BookingCard = ({ booking }: BookingCardProps) => {
   const dispatch = useAppDispatch()
 
-  const date = new TZDate(
-    `${booking.date} ${booking.startTime}`,
-    booking.doctor?.timezone
-  )
+  const date = new Date(`${booking.date}T${booking.startTime}`)
   const formattedTime = format(date, 'hh:mm a')
   const formattedTZ = tzName(booking.doctor?.timezone, date, 'shortGeneric')
 
