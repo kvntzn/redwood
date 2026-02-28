@@ -1,20 +1,39 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { doctorsApi } from './apis/doctorsApi'
-import bookingReducer from './slices/booking/bookingSlice'
-import doctorsReducer from './slices/doctors/doctorSlice'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+  PERSIST,
+  PAUSE,
+  FLUSH,
+  REGISTER,
+  persistStore,
+  REHYDRATE,
+  persistReducer,
+  PURGE,
+} from 'redux-persist'
+import rootReducer from './reducer'
+
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-  reducer: {
-    // Add the generated reducer as a specific top-level slice
-    [doctorsApi.reducerPath]: doctorsApi.reducer,
-    booking: bookingReducer,
-    doctors: doctorsReducer,
-  },
+  reducer: persistedReducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(doctorsApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        warnAfter: 128,
+      },
+      immutableCheck: { warnAfter: 128 },
+    }).concat(doctorsApi.middleware),
   enhancers: (getDefaultEnhancers) => {
     if (__DEV__) {
       const reactotron = require('../../ReactotronConfig').default
@@ -24,6 +43,8 @@ export const store = configureStore({
     }
   },
 })
+
+export const persistor = persistStore(store)
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
 // see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
