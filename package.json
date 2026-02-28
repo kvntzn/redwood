@@ -23,6 +23,8 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "reactotron-react-native": "^5.1.18",
+    "reactotron-redux": "^3.2.1",
     "typescript": "~5.9.2"
   },
   "private": true,

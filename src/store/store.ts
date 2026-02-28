@@ -11,6 +11,14 @@ export const store = configureStore({
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(doctorsApi.middleware),
+  enhancers: (getDefaultEnhancers) => {
+    if (__DEV__) {
+      const reactotron = require('../../ReactotronConfig').default
+      return getDefaultEnhancers().concat(reactotron.createEnhancer())
+    } else {
+      return getDefaultEnhancers()
+    }
+  },
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
