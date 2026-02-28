@@ -1,0 +1,40 @@
+import { parse, getHours, getMinutes } from 'date-fns'
+import { DoctorShift } from '../types/DoctorSchedule'
+
+const timeToDecimal = (time: string) => {
+  const date = parse(time.trim(), 'h:mma', new Date())
+
+  return getHours(date) + getMinutes(date) / 60
+}
+
+export const getUnavailableHours = (shifts: DoctorShift[]) => {
+  let unavailableHours: { start: number; end: number }[] = []
+
+  for (let index = 0; index < shifts.length; index++) {
+    const element = shifts[index]
+    const { availableAt, availableUntil } = element
+
+    if (!availableAt || !availableUntil) {
+      continue
+    }
+
+    const start = timeToDecimal(availableAt)
+    const end = timeToDecimal(availableUntil)
+
+    if (start > 0) {
+      unavailableHours.push({ start: 0, end: start })
+    }
+
+    if (end < 24) {
+      unavailableHours.push({
+        start: end,
+        end:
+          index === shifts.length - 1
+            ? 24
+            : timeToDecimal(shifts[index + 1].availableAt),
+      })
+    }
+  }
+
+  return unavailableHours
+}

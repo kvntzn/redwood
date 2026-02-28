@@ -37,7 +37,7 @@ export const HomeStack = () => {
               <Text style={Theme.typography.body}>{route.params.timezone}</Text>
             </View>
           ),
-          headerTransparent: true,
+          // headerTransparent: true,
           headerBackButtonDisplayMode: 'minimal',
         })}
       />
