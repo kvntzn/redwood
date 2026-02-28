@@ -44,6 +44,10 @@ export const HomeStack = () => {
       <Stack.Screen
         name='Booking Confirmation'
         component={BookingConfirmationScreen}
+        options={{
+          presentation: 'modal',
+          headerTransparent: true,
+        }}
       />
     </Stack.Navigator>
   )

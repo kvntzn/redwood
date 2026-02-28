@@ -12,11 +12,10 @@ import {
 import { set, addMinutes, format } from 'date-fns'
 import { getUnavailableDays, getUnavailableHours } from '../helpers/timeHelper'
 import { useAppDispatch } from '../store/hooks'
-import { addBooking } from '../store/bookingSlice'
 
 const today = new Date().toISOString().split('T')[0]
 
-const DoctorDetailScreen = ({ route }: DoctorDetailScreenProps) => {
+const DoctorDetailScreen = ({ route, navigation }: DoctorDetailScreenProps) => {
   const { id } = route.params
 
   const dispatch = useAppDispatch()
@@ -49,32 +48,42 @@ const DoctorDetailScreen = ({ route }: DoctorDetailScreenProps) => {
     const end = format(endDate, 'HH:mm')
     setSelectedTime({ date: selectedDate, start, end })
 
-    const formattedStart = format(startDate, 'hh:mm a')
-    Alert.alert(
-      'Book Appointment',
-      `Schedule with Dr. ${doctor?.name} on ${selectedDate} at ${formattedStart}?`,
-      [
-        { text: 'Cancel', onPress: () => setSelectedTime(null) },
-        {
-          text: 'Confirm',
-          onPress: () => {
-            dispatch(
-              addBooking({
-                id: `${doctor.id}-${selectedDate}-${start}`,
-                date: selectedDate,
-                startTime: start,
-                endTime: end,
-                doctor: {
-                  id: doctor.id,
-                  name: doctor.name,
-                  timezone: doctor.timezone,
-                },
-              })
-            )
-          },
-        },
-      ]
-    )
+    // const formattedStart = format(startDate, 'hh:mm a')
+    // Alert.alert(
+    //   'Book Appointment',
+    //   `Schedule with Dr. ${doctor?.name} on ${selectedDate} at ${formattedStart}?`,
+    //   [
+    //     { text: 'Cancel', onPress: () => setSelectedTime(null) },
+    //     {
+    //       text: 'Confirm',
+    //       onPress: () => {
+    //         // dispatch(
+    //         //   addBooking({
+    //         //     id: `${doctor.id}-${selectedDate}-${start}`,
+    //         //     date: selectedDate,
+    //         //     startTime: start,
+    //         //     endTime: end,
+    //         //     doctor: {
+    //         //       id: doctor.id,
+    //         //       name: doctor.name,
+    //         //       timezone: doctor.timezone,
+    //         //     },
+    //         //   })
+    //         // )
+    //       },
+    //     },
+    //   ]
+    // )
+    navigation.navigate('Booking Confirmation', {
+      id: `${doctor.id}-${selectedDate}-${start}`,
+      date: selectedDate,
+      startTime: start,
+      endTime: end,
+    })
+
+    setTimeout(() => {
+      setSelectedTime(null)
+    }, 1000)
   }
 
   const unavailableDays = useMemo(() => {

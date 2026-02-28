@@ -8,7 +8,12 @@ export type RootTabParamList = {
 export type HomeStackParamList = {
   'Doctors List': undefined
   'Doctors Detail': { id: string; name: string; timezone: string }
-  'Booking Confirmation': { id: string; time: string }
+  'Booking Confirmation': {
+    id: string
+    date: string
+    startTime: string
+    endTime: string
+  }
 }
 
 export type BookingsStackParamList = {
@@ -23,4 +28,9 @@ export type DoctorsListScreenProps = NativeStackScreenProps<
 export type DoctorDetailScreenProps = NativeStackScreenProps<
   HomeStackParamList,
   'Doctors Detail'
+>
+
+export type BookingConfirmationScreenProps = NativeStackScreenProps<
+  HomeStackParamList,
+  'Booking Confirmation'
 >
