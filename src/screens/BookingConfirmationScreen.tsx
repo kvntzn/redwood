@@ -81,7 +81,6 @@ const BookingConfirmationScreen = ({
         style={[
           Theme.typography.body,
           {
-            alignItems: 'center',
             textAlign: 'center',
           },
         ]}
