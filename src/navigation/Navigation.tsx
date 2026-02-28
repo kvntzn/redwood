@@ -1,56 +1,14 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeBottomTabNavigator } from '@react-navigation/bottom-tabs/unstable'
-import BookingConfirmationScreen from '../screens/BookingConfirmationScreen'
-import DoctorDetailScreen from '../screens/DoctorDetailScreen'
-import DoctorsListScreen from '../screens/DoctorsListScreen'
-import MyBookingsScreen from '../screens/MyBookingsScreen'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { NavigationTheme, Theme } from '../theme/theme'
+import { NavigationTheme } from '../theme/theme'
+import { BookingsTab } from './BookingsTabNavigator'
+import { HomeStack } from './HomeStackNavigator'
+import { RootTabParamList } from '../types/Navigation'
 
-const Tab = createNativeBottomTabNavigator()
+const Tab = createNativeBottomTabNavigator<RootTabParamList>()
 
-const Stack = createNativeStackNavigator()
-
-const HomeStack = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name='Doctors List'
-        component={DoctorsListScreen}
-        options={{
-          headerLargeTitleEnabled: true,
-          headerTitle: 'Doctors',
-          headerLargeTitleStyle: {
-            color: '#000',
-          },
-          headerLargeStyle: {
-            // backgroundColor: '#fff',
-          },
-        }}
-      />
-      <Stack.Screen name='Doctors Detail' component={DoctorDetailScreen} />
-      <Stack.Screen
-        name='Booking Confirmation'
-        component={BookingConfirmationScreen}
-      />
-    </Stack.Navigator>
-  )
-}
-
-const BookingsTab = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name='My Bookings'
-        component={MyBookingsScreen}
-        options={{ headerLargeTitleEnabled: true, headerTitle: 'My Bookings' }}
-      />
-    </Stack.Navigator>
-  )
-}
-
-const RootStack = () => {
+const RootTab = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -75,7 +33,7 @@ export default function Navigation() {
   return (
     <SafeAreaProvider>
       <NavigationContainer theme={NavigationTheme}>
-        <RootStack />
+        <RootTab />
       </NavigationContainer>
     </SafeAreaProvider>
   )

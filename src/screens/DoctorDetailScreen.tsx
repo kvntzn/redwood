@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { DoctorDetailScreenProps } from '../types/Navigation'
 
-const DoctorDetailScreen = () => {
+const DoctorDetailScreen = ({ route }: DoctorDetailScreenProps) => {
+  const { id } = route.params
+
   return (
-    <View>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>DoctorDetailScreen</Text>
     </View>
   )

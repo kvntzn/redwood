@@ -4,12 +4,18 @@ import { useGetDoctorsQuery } from '../store/doctorsApi'
 import DoctorCard from '../components/DoctorCard'
 import { Theme } from '../theme/theme'
 import { Doctor } from '../types/Doctor'
+import { DoctorsListScreenProps } from '../types/Navigation'
 
-const DoctorsListScreen = () => {
+const DoctorsListScreen = ({ navigation }: DoctorsListScreenProps) => {
   const { data, isLoading, isFetching, refetch } = useGetDoctorsQuery()
 
   const renderItem = ({ item }: { item: Doctor }) => (
-    <DoctorCard doctor={item} />
+    <DoctorCard
+      doctor={item}
+      onPress={() =>
+        navigation.navigate('Doctors Detail', { id: item.id, name: item.name })
+      }
+    />
   )
 
   return (
