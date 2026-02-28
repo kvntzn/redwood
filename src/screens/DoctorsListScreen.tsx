@@ -13,7 +13,11 @@ const DoctorsListScreen = ({ navigation }: DoctorsListScreenProps) => {
     <DoctorCard
       doctor={item}
       onPress={() =>
-        navigation.navigate('Doctors Detail', { id: item.id, name: item.name })
+        navigation.navigate('Doctors Detail', {
+          id: item.id,
+          name: item.name,
+          timezone: item.timezone,
+        })
       }
     />
   )
