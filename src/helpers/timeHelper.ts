@@ -22,7 +22,11 @@ export const getUnavailableHours = (shifts: DoctorShift[]) => {
     const end = timeToDecimal(availableUntil)
 
     if (start > 0) {
-      unavailableHours.push({ start: 0, end: start })
+      unavailableHours.push({
+        start:
+          index === 0 ? 0 : timeToDecimal(shifts[index - 1].availableUntil),
+        end: start,
+      })
     }
 
     if (end < 24) {

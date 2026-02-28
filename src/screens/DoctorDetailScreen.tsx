@@ -69,6 +69,7 @@ const DoctorDetailScreen = ({ route }: DoctorDetailScreenProps) => {
     const day = format(selectedDate, 'EEEE')
 
     const schedule = doctor?.schedule.find((s) => s.dayOfWeek === day)
+    // console.log('schedule', schedule)
 
     const unavailableHours = schedule?.shifts
       ? getUnavailableHours(schedule.shifts)
