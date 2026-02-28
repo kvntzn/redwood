@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import { DoctorDetailScreenProps } from '../types/Navigation'
 import { useGetDoctorsQuery } from '../store/doctorsApi'
@@ -10,7 +10,7 @@ import {
   TimelineEventProps,
 } from 'react-native-calendars'
 import { set, addMinutes, format } from 'date-fns'
-import { getUnavailableHours } from '../helpers/timeHelper'
+import { getUnavailableDays, getUnavailableHours } from '../helpers/timeHelper'
 
 const today = new Date().toISOString().split('T')[0]
 
@@ -65,11 +65,13 @@ const DoctorDetailScreen = ({ route }: DoctorDetailScreenProps) => {
     )
   }
 
+  const unavailableDays = useMemo(() => {
+    return getUnavailableDays(doctor.schedule)
+  }, [doctor.schedule])
+
   const timelineProps = useMemo(() => {
     const day = format(selectedDate, 'EEEE')
-
     const schedule = doctor?.schedule.find((s) => s.dayOfWeek === day)
-    // console.log('schedule', schedule)
 
     const unavailableHours = schedule?.shifts
       ? getUnavailableHours(schedule.shifts)
@@ -113,7 +115,8 @@ const DoctorDetailScreen = ({ route }: DoctorDetailScreenProps) => {
       >
         <ExpandableCalendar
           firstDay={1}
-          disabledByWeekDays={[]}
+          disabledByWeekDays={unavailableDays}
+          minDate={today}
           // leftArrowImageSource={require('../img/previous.png')}
           // rightArrowImageSource={require('../img/next.png')}
           // markedDates={this.marked}

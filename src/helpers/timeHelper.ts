@@ -1,5 +1,5 @@
 import { parse, getHours, getMinutes } from 'date-fns'
-import { DoctorShift } from '../types/DoctorSchedule'
+import { DayOfWeek, DoctorSchedule, DoctorShift } from '../types/DoctorSchedule'
 
 const timeToDecimal = (time: string) => {
   const date = parse(time.trim(), 'h:mma', new Date())
@@ -41,4 +41,19 @@ export const getUnavailableHours = (shifts: DoctorShift[]) => {
   }
 
   return unavailableHours
+}
+
+export const getUnavailableDays = (schedule: DoctorSchedule[]) => {
+  const dayMap: Record<DayOfWeek, number> = {
+    Sunday: 0,
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6,
+  }
+  const availableDays = new Set(schedule.map((s) => dayMap[s.dayOfWeek]))
+
+  return [0, 1, 2, 3, 4, 5, 6].filter((day) => !availableDays.has(day))
 }
