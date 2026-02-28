@@ -5,11 +5,16 @@ import { Theme } from '../theme/theme'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6'
 
 interface DoctorCardProps {
-  doctor: Doctor
+  doctor: Omit<Doctor, 'availability' | 'schedule'>
+  showTimezone?: boolean
   onPress?: () => void
 }
 
-const DoctorCard = ({ doctor, onPress }: DoctorCardProps) => {
+const DoctorCard = ({
+  doctor,
+  showTimezone = true,
+  onPress,
+}: DoctorCardProps) => {
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <View style={styles.innerContainer}>
@@ -23,7 +28,11 @@ const DoctorCard = ({ doctor, onPress }: DoctorCardProps) => {
 
         <View>
           <Text style={Theme.typography.subheader}>{doctor.name}</Text>
-          <Text style={Theme.typography.body}>{doctor.timezone}</Text>
+          {showTimezone ? (
+            <Text style={Theme.typography.body}>{doctor.timezone}</Text>
+          ) : (
+            <View />
+          )}
         </View>
       </View>
     </Pressable>

@@ -34,3 +34,8 @@ export type BookingConfirmationScreenProps = NativeStackScreenProps<
   HomeStackParamList,
   'Booking Confirmation'
 >
+
+export type MyBookingsScreenProps = NativeStackScreenProps<
+  BookingsStackParamList,
+  'My Bookings'
+>

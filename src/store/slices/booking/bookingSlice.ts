@@ -15,9 +15,15 @@ const bookingSlice = createSlice({
     addBooking: (state, action: PayloadAction<Booking>) => {
       state.bookings.push(action.payload)
     },
+    cancelBooking: (state, action: PayloadAction<string>) => {
+      const bookingId = action.payload
+      state.bookings = state.bookings.filter(
+        (booking) => booking.id !== bookingId
+      )
+    },
   },
 })
 
 const { actions, reducer } = bookingSlice
-export const { addBooking } = actions
+export const { addBooking, cancelBooking } = actions
 export default reducer
