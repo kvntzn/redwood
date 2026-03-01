@@ -5,8 +5,6 @@ appId: dev.expo.shiftcare
 - tapOn:
     id: "undefined.calendarList.staticHeader.rightArrow"
 
-- tapOn: "Tue"
-
 - repeat:
     times: 3
     commands:

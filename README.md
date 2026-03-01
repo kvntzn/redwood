@@ -67,6 +67,7 @@ React Native Appointment Scheduling application that enables users to browse act
 - **My Bookings** — View all bookings grouped by date. Cancel bookings with a confirmation prompt.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Assumptions & Design Decisions
 
 - There’s only one GET API for doctors (static JSON, no query params).
