@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useLayoutEffect } from 'react'
 import { BookingConfirmationScreenProps } from '../types/Navigation'
 import Ionicons from '@expo/vector-icons/Ionicons'
@@ -40,12 +40,16 @@ const BookingConfirmationScreen = ({
       })
     )
 
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'Bookings' }],
-      })
-    )
+    if (Platform.OS === 'ios') {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Bookings' }],
+        })
+      )
+    } else {
+      navigation.getParent()?.navigate('Bookings')
+    }
   }, [dispatch, doctor, date, startTime, endTime])
 
   const formattedDate = new Date(`${date}T${startTime}`)

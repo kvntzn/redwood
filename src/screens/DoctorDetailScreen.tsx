@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DoctorDetailScreenProps } from '../types/Navigation'
 import { Theme } from '../theme/theme'
@@ -14,11 +14,14 @@ import { useAppSelector } from '../store/hooks'
 import { useDoctorByIdSelector } from '../store/slices/doctors/doctorSelector'
 import { useBookingsSelector } from '../store/slices/booking/bookingSelector'
 import { calendarTheme } from '../theme/calendarTheme'
+import { useHeaderHeight } from '@react-navigation/elements'
 
 const today = new Date().toISOString().split('T')[0]
 
 const DoctorDetailScreen = ({ route, navigation }: DoctorDetailScreenProps) => {
   const { id } = route.params
+  const headerHeight = useHeaderHeight()
+
   const doctor = useAppSelector((state) => useDoctorByIdSelector(state, id))
   const bookings = useAppSelector(useBookingsSelector)
 
@@ -128,9 +131,11 @@ const DoctorDetailScreen = ({ route, navigation }: DoctorDetailScreenProps) => {
     <View
       style={[
         styles.container,
-        {
-          marginTop: 120,
-        },
+        Platform.OS === 'ios'
+          ? {
+              marginTop: headerHeight,
+            }
+          : null,
       ]}
     >
       <CalendarProvider

@@ -44,7 +44,10 @@ export const HomeStack = () => {
               <Text style={Theme.typography.body}>{route.params.timezone}</Text>
             </View>
           ),
-          headerTransparent: true,
+          headerTransparent: Platform.select({
+            android: false,
+            ios: true,
+          }),
           headerBackButtonDisplayMode: 'minimal',
         })}
       />
@@ -53,7 +56,10 @@ export const HomeStack = () => {
         component={BookingConfirmationScreen}
         options={{
           presentation: 'modal',
-          headerTransparent: true,
+          headerTransparent: Platform.select({
+            android: false,
+            ios: true,
+          }),
         }}
       />
     </Stack.Navigator>
