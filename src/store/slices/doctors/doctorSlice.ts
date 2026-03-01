@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { doctorsApi } from '../../apis/doctorsApi'
-import { Doctor } from '../../../types/Doctor'
-
-type DoctorsState = {
-  doctors: Doctor[]
-}
+import { DoctorsState } from '../../../types/Slices'
 
 const initialState: DoctorsState = {
   doctors: [],

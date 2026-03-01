@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Booking } from '../../../types/Booking'
+import { BookingState } from '../../../types/Slices'
 
-type BookingState = {
-  bookings: Booking[]
-}
 const initialState: BookingState = {
   bookings: [],
 }

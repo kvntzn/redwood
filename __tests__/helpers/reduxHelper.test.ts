@@ -9,11 +9,11 @@ describe('transformDoctorsResponse', () => {
   it('creates a doctor from a single availability', () => {
     const input: DoctorAvailability[] = [
       {
-        name: 'Dr Smith',
+        name: 'Christy Schumm',
         timezone: 'Australia/Sydney',
         day_of_week: 'Monday',
-        available_at: '9:00am',
-        available_until: '5:00pm',
+        available_at: ' 9:00AM',
+        available_until: ' 5:30PM',
       },
     ]
 
@@ -21,13 +21,13 @@ describe('transformDoctorsResponse', () => {
 
     expect(result).toEqual([
       {
-        id: 'dr-smith',
-        name: 'Dr Smith',
+        id: 'christy-schumm',
+        name: 'Christy Schumm',
         timezone: 'Australia/Sydney',
         schedule: [
           {
             dayOfWeek: 'Monday',
-            shifts: [{ availableAt: '9:00am', availableUntil: '5:00pm' }],
+            shifts: [{ availableAt: ' 9:00AM', availableUntil: ' 5:30PM' }],
           },
         ],
       },
@@ -37,18 +37,18 @@ describe('transformDoctorsResponse', () => {
   it('groups multiple shifts under the same day for the same doctor', () => {
     const input: DoctorAvailability[] = [
       {
-        name: 'Dr Smith',
-        timezone: 'Australia/Sydney',
-        day_of_week: 'Monday',
-        available_at: '9:00am',
-        available_until: '12:00pm',
+        name: 'Dr. Geovany Keebler',
+        timezone: 'Australia/Perth',
+        day_of_week: 'Thursday',
+        available_at: ' 7:00AM',
+        available_until: ' 2:00PM',
       },
       {
-        name: 'Dr Smith',
-        timezone: 'Australia/Sydney',
-        day_of_week: 'Monday',
-        available_at: '1:00pm',
-        available_until: '5:00pm',
+        name: 'Dr. Geovany Keebler',
+        timezone: 'Australia/Perth',
+        day_of_week: 'Thursday',
+        available_at: ' 3:00PM',
+        available_until: ' 5:00PM',
       },
     ]
 
@@ -57,23 +57,25 @@ describe('transformDoctorsResponse', () => {
     expect(result).toHaveLength(1)
     expect(result[0].schedule).toHaveLength(1)
     expect(result[0].schedule[0].shifts).toHaveLength(2)
+    expect(result[0].schedule[0].shifts[0].availableAt).toBe(' 7:00AM')
+    expect(result[0].schedule[0].shifts[1].availableAt).toBe(' 3:00PM')
   })
 
   it('groups different days under the same doctor', () => {
     const input: DoctorAvailability[] = [
       {
-        name: 'Dr Smith',
+        name: 'Christy Schumm',
         timezone: 'Australia/Sydney',
         day_of_week: 'Monday',
-        available_at: '9:00am',
-        available_until: '5:00pm',
+        available_at: ' 9:00AM',
+        available_until: ' 5:30PM',
       },
       {
-        name: 'Dr Smith',
+        name: 'Christy Schumm',
         timezone: 'Australia/Sydney',
         day_of_week: 'Tuesday',
-        available_at: '10:00am',
-        available_until: '4:00pm',
+        available_at: ' 8:00AM',
+        available_until: ' 4:00PM',
       },
     ]
 
@@ -88,25 +90,25 @@ describe('transformDoctorsResponse', () => {
   it('separates different doctors', () => {
     const input: DoctorAvailability[] = [
       {
-        name: 'Dr Smith',
+        name: 'Christy Schumm',
         timezone: 'Australia/Sydney',
         day_of_week: 'Monday',
-        available_at: '9:00am',
-        available_until: '5:00pm',
+        available_at: ' 9:00AM',
+        available_until: ' 5:30PM',
       },
       {
-        name: 'Dr Jones',
-        timezone: 'America/New_York',
+        name: 'Ramy Malik',
+        timezone: 'Australia/Perth',
         day_of_week: 'Monday',
-        available_at: '8:00am',
-        available_until: '4:00pm',
+        available_at: ' 9:00AM',
+        available_until: ' 3:00PM',
       },
     ]
 
     const result = transformDoctorsResponse(input)
 
     expect(result).toHaveLength(2)
-    expect(result[0].name).toBe('Dr Smith')
-    expect(result[1].name).toBe('Dr Jones')
+    expect(result[0].name).toBe('Christy Schumm')
+    expect(result[1].name).toBe('Ramy Malik')
   })
 })
