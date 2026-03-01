@@ -23,10 +23,10 @@ const BookingConfirmationScreen = ({
   const dispatch = useAppDispatch()
   const doctor = useAppSelector((state) => useDoctorByIdSelector(state, id))
 
-  const onConfirmPress = useCallback(() => {
+  const onConfirmPress = useCallback(async () => {
     if (!doctor) return
 
-    dispatch(
+    const result = await dispatch(
       addBooking({
         id: `${doctor.id}-${date}-${startTime}`,
         date: date,
@@ -40,6 +40,11 @@ const BookingConfirmationScreen = ({
       })
     )
 
+    if (result.meta.requestStatus === 'rejected') {
+      navigation.goBack()
+      return
+    }
+
     if (Platform.OS === 'ios') {
       navigation.dispatch(
         CommonActions.reset({
@@ -48,6 +53,7 @@ const BookingConfirmationScreen = ({
         })
       )
     } else {
+      navigation.popToTop()
       navigation.getParent()?.navigate('Bookings')
     }
   }, [dispatch, doctor, date, startTime, endTime])
