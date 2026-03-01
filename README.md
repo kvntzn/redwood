@@ -65,6 +65,11 @@ React Native Appointment Scheduling application that enables users to browse act
 
 https://github.com/user-attachments/assets/3274cc9d-cefc-4581-a687-770f4a7db894
 
+https://github.com/user-attachments/assets/275be83c-5e36-4e47-b86c-60001f870eb0
+
+https://github.com/user-attachments/assets/81fa48f3-14ab-410d-9dc6-6cabf03982ec
+
+
 
 - **Doctors List** — Browse available doctors with pull-to-refresh, showing name and timezone.
 - **Doctor Detail** — Interactive calendar and timeline view of a doctor's weekly availability. Long-press an available time slot to book a 30-minute appointment.
