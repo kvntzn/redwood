@@ -36,6 +36,7 @@ React Native Appointment Scheduling application that enables users to browse act
 2. Install and use the correct version of Node using [NVM](https://github.com/nvm-sh/nvm)
    ```sh
    nvm install
+   nvm use
    ```
 3. Install dependencies
    ```sh
