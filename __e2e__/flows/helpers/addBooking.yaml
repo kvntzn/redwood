@@ -20,8 +20,7 @@ appId: dev.expo.shiftcare
     duration: 500
 
 - longPressOn:
-    id: "timeline.longpress"
-    point: 20%,60%
+    point: 10%,55%
 
 - assertVisible: "Booking Confirmation"
 - assertVisible: "Doctor: Christy Schumm"

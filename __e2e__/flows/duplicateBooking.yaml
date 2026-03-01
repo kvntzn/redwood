@@ -1,0 +1,16 @@
+appId: dev.expo.shiftcare
+---
+- runFlow:
+    file: ../setupApp.yml
+
+- runFlow:
+    file: helpers/addBooking.yaml
+
+- tapOn: "Doctors"
+
+- runFlow:
+    file: helpers/addBooking.yaml
+
+- assertVisible: "Booked with Dr. Christy Schumm,  "
+
+- assertVisible: "Rejected"

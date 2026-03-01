@@ -4,9 +4,9 @@ appId: dev.expo.shiftcare
     file: ../setupApp.yml
     
 - runFlow:
-    file: addBooking.yaml
+    file: helpers/addBooking.yaml
 
-- tapOn: "History"
+- tapOn: "My Bookings"
 
 - tapOn: ", Christy Schumm"
 
