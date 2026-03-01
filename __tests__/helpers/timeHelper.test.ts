@@ -98,6 +98,59 @@ describe('getUnavailableHours', () => {
       { start: 17.5, end: 24 },
     ])
   })
+
+  it('marks past hours as unavailable when currentHour is provided', () => {
+    const input: DoctorShift[] = [
+      {
+        availableAt: '8:00AM',
+        availableUntil: '4:00PM',
+      },
+    ]
+
+    const result = getUnavailableHours(input, 10)
+
+    expect(result).toEqual([
+      { start: 0, end: 10 },
+      { start: 16, end: 24 },
+    ])
+  })
+
+  it('skips shifts entirely in the past', () => {
+    const input: DoctorShift[] = [
+      {
+        availableAt: '7:00AM',
+        availableUntil: '10:00AM',
+      },
+      {
+        availableAt: '1:00PM',
+        availableUntil: '5:00PM',
+      },
+    ]
+
+    const result = getUnavailableHours(input, 12)
+
+    expect(result).toEqual([
+      { start: 0, end: 12 },
+      { start: 12, end: 13 },
+      { start: 17, end: 24 },
+    ])
+  })
+
+  it('does not affect results when currentHour is undefined', () => {
+    const input: DoctorShift[] = [
+      {
+        availableAt: '8:00AM',
+        availableUntil: '4:00PM',
+      },
+    ]
+
+    const result = getUnavailableHours(input, undefined)
+
+    expect(result).toEqual([
+      { start: 0, end: 8 },
+      { start: 16, end: 24 },
+    ])
+  })
 })
 
 describe('getUnavailableDays', () => {

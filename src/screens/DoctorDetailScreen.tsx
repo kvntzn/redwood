@@ -9,7 +9,11 @@ import {
   TimelineEventProps,
 } from 'react-native-calendars'
 import { set, addMinutes, format } from 'date-fns'
-import { getUnavailableDays, getUnavailableHours } from '../helpers/timeHelper'
+import {
+  getUnavailableDays,
+  getUnavailableHours,
+  getCurrentHour,
+} from '../helpers/timeHelper'
 import { useAppSelector } from '../store/hooks'
 import { useDoctorByIdSelector } from '../store/slices/doctors/doctorSelector'
 import { useBookingsSelector } from '../store/slices/booking/bookingSelector'
@@ -79,8 +83,11 @@ const DoctorDetailScreen = ({ route, navigation }: DoctorDetailScreenProps) => {
   const unavailableHours = useMemo(() => {
     const day = format(new Date(selectedDate), 'EEEE')
     const schedule = doctor?.schedule.find((s) => s.dayOfWeek === day)
+    const isToday = selectedDate === today
+    const currentHour = isToday ? getCurrentHour() : undefined
+
     return schedule?.shifts
-      ? getUnavailableHours(schedule.shifts)
+      ? getUnavailableHours(schedule.shifts, currentHour)
       : [{ start: 0, end: 24 }]
   }, [doctor?.schedule, selectedDate])
 

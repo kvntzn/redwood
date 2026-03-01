@@ -7,9 +7,22 @@ export const timeToDecimal = (time: string) => {
   return getHours(date) + getMinutes(date) / 60
 }
 
-export const getUnavailableHours = (shifts: DoctorShift[]) => {
+export const getCurrentHour = () => {
+  const now = new Date()
+  return getHours(now) + getMinutes(now) / 60
+}
+
+export const getUnavailableHours = (
+  shifts: DoctorShift[],
+  currentHour?: number
+) => {
   let unavailableHours: { start: number; end: number }[] = []
   let cursor = 0
+
+  if (currentHour && currentHour > 0) {
+    unavailableHours.push({ start: 0, end: currentHour })
+    cursor = currentHour
+  }
 
   for (let index = 0; index < shifts.length; index++) {
     const element = shifts[index]
@@ -17,14 +30,20 @@ export const getUnavailableHours = (shifts: DoctorShift[]) => {
     const start = timeToDecimal(availableAt)
     const end = timeToDecimal(availableUntil)
 
-    if (cursor < start) {
+    if (currentHour && end <= currentHour) {
+      continue
+    }
+
+    const effectiveStart = Math.max(start, cursor)
+
+    if (cursor < effectiveStart) {
       unavailableHours.push({
         start: cursor,
-        end: start,
+        end: effectiveStart,
       })
     }
 
-    cursor = end
+    cursor = Math.max(end, cursor)
   }
 
   if (cursor < 24) {
