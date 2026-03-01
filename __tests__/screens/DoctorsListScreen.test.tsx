@@ -36,41 +36,41 @@ const renderScreen = () => {
 }
 
 describe('DoctorsListScreen', () => {
-  it('fetches and displays doctors from the API', async () => {
-    const { findByText } = renderScreen()
+  it('fetches and displays doctors from the API', () => {
+    const { getByText } = renderScreen()
 
-    expect(await findByText('Christy Schumm')).toBeTruthy()
-    expect(await findByText('Natalia Stanton Jr.')).toBeTruthy()
+    expect(getByText('Christy Schumm')).toBeTruthy()
+    expect(getByText('Natalia Stanton Jr.')).toBeTruthy()
   })
 
   it('displays timezone for each doctor', async () => {
-    const { findByText, findAllByText } = renderScreen()
+    const { getByText, findAllByText } = renderScreen()
 
-    expect(await findByText('Australia/Sydney')).toBeTruthy()
-    expect((await findAllByText('Australia/Perth')).length).toBeGreaterThan(0)
+    expect(getByText('Australia/Sydney')).toBeTruthy()
+    expect(await findAllByText('Australia/Perth').length).toBeGreaterThan(0)
   })
 
-  it('navigates to doctor detail when a doctor is pressed', async () => {
-    const { findByText } = renderScreen()
+  it('navigates to doctor detail when a doctor is pressed', () => {
+    const { getByText } = renderScreen()
 
-    const doctor = await findByText('Christy Schumm')
+    const doctor = getByText('Christy Schumm')
     fireEvent.press(doctor)
 
-    expect(await findByText('Detail: Christy Schumm')).toBeTruthy()
+    expect(getByText('Detail: Christy Schumm')).toBeTruthy()
   })
 
-  it('renders empty list when API returns no doctors', async () => {
+  it('renders empty list when API returns no doctors', () => {
     server.use(...setupDoctorsHandler([]))
 
     const { queryByText } = renderScreen()
 
-    await waitFor(() => {
+    waitFor(() => {
       expect(queryByText('Christy Schumm')).toBeNull()
       expect(queryByText('Natalia Stanton Jr.')).toBeNull()
     })
   })
 
-  it('renders a single doctor when API returns one', async () => {
+  it('renders a single doctor when API returns one', () => {
     server.use(
       ...setupDoctorsHandler([
         {
@@ -83,9 +83,9 @@ describe('DoctorsListScreen', () => {
       ])
     )
 
-    const { findByText, queryByText } = renderScreen()
+    const { getByText, queryByText } = renderScreen()
 
-    expect(await findByText('Dr Wilson')).toBeTruthy()
+    expect(getByText('Dr Wilson')).toBeTruthy()
     expect(queryByText('Christy Schumm')).toBeNull()
   })
 })
