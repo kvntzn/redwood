@@ -1,13 +1,14 @@
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native'
+import { FlatList, RefreshControl } from 'react-native'
 import React from 'react'
 import { useGetDoctorsQuery } from '../store/apis/doctorsApi'
 import DoctorCard from '../components/DoctorCard'
 import { Doctor } from '../types/Doctor'
 import { DoctorsListScreenProps } from '../types/Navigation'
 import Separator from '../components/Separator'
+import EmptyListView from '../components/EmptyListView'
 
 const DoctorsListScreen = ({ navigation }: DoctorsListScreenProps) => {
-  const { data, isLoading, isFetching, refetch } = useGetDoctorsQuery()
+  const { data, isLoading, isFetching, refetch, error } = useGetDoctorsQuery()
 
   const renderItem = ({ item }: { item: Doctor }) => (
     <DoctorCard
@@ -24,6 +25,24 @@ const DoctorsListScreen = ({ navigation }: DoctorsListScreenProps) => {
 
   const renderSeparator = () => <Separator />
 
+  const renderEmpty = () => {
+    if (error) {
+      return (
+        <EmptyListView
+          title='Something went wrong'
+          description='Please try again later.'
+        />
+      )
+    }
+
+    return (
+      <EmptyListView
+        title='No Available Doctors'
+        description='Please try again another time.'
+      />
+    )
+  }
+
   return (
     <FlatList
       data={data}
@@ -35,6 +54,7 @@ const DoctorsListScreen = ({ navigation }: DoctorsListScreenProps) => {
           onRefresh={refetch}
         />
       }
+      ListEmptyComponent={renderEmpty}
       ItemSeparatorComponent={renderSeparator}
       contentInsetAdjustmentBehavior='automatic'
     />
