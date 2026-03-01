@@ -5,10 +5,13 @@ import DoctorsListScreen from '../screens/DoctorsListScreen'
 import { HomeStackParamList } from '../types/Navigation'
 import { Platform, Text, View } from 'react-native'
 import { Theme } from '../theme/theme'
+// import Ionicons from '@expo/vector-icons/Ionicons'
+// import { useResetState } from '../store/hooks/useResetState'
 
 const Stack = createNativeStackNavigator<HomeStackParamList>()
 
 export const HomeStack = () => {
+  // const { clear } = useResetState()
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -20,9 +23,12 @@ export const HomeStack = () => {
           headerLargeTitleStyle: {
             color: '#000',
           },
-          headerLargeStyle: {
-            // backgroundColor: '#fff',
-          },
+          // DEBUG
+          // headerRight: () => (
+          //   <Pressable onPress={clear}>
+          //     <Ionicons name='refresh' size={24} color='black' />
+          //   </Pressable>
+          // ),
         }}
       />
       <Stack.Screen

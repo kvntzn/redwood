@@ -14,10 +14,12 @@ import {
   PURGE,
 } from 'redux-persist'
 import rootReducer from './reducer'
+import { rtkQueryErrorLogger } from './logger'
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  // blacklist: ['bookings', 'doctors'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -35,7 +37,9 @@ export const setupStore = (preloadedState?: PreloadedState) =>
           warnAfter: 128,
         },
         immutableCheck: { warnAfter: 128 },
-      }).concat(doctorsApi.middleware),
+      })
+        .concat(doctorsApi.middleware)
+        .concat(rtkQueryErrorLogger),
     enhancers: (getDefaultEnhancers) => {
       if (__DEV__) {
         const reactotron = require('../../ReactotronConfig').default
