@@ -13,6 +13,7 @@ import { getUnavailableDays, getUnavailableHours } from '../helpers/timeHelper'
 import { useAppSelector } from '../store/hooks'
 import { useDoctorByIdSelector } from '../store/slices/doctors/doctorSelector'
 import { useBookingsSelector } from '../store/slices/booking/bookingSelector'
+import { calendarTheme } from '../theme/calendarTheme'
 
 const today = new Date().toISOString().split('T')[0]
 
@@ -124,21 +125,25 @@ const DoctorDetailScreen = ({ route, navigation }: DoctorDetailScreenProps) => {
   }, [selectedTime, doctor?.name, bookings])
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          marginTop: 120,
+        },
+      ]}
+    >
       <CalendarProvider
         date={today}
         onDateChanged={onDateChanged}
         showTodayButton
         disabledOpacity={0.6}
-        // numberOfDays={3}
       >
         <ExpandableCalendar
           firstDay={1}
           disabledByWeekDays={unavailableDays}
           minDate={today}
-          // leftArrowImageSource={require('../img/previous.png')}
-          // rightArrowImageSource={require('../img/next.png')}
-          // markedDates={this.marked}
+          theme={calendarTheme}
         />
         <TimelineList
           events={events}

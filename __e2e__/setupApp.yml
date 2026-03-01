@@ -1,0 +1,9 @@
+appId: dev.expo.shiftcare
+---
+- launchApp:
+    appId: "dev.expo.shiftcare"
+    clearState: true
+    permissions:
+      all: allow
+- extendedWaitUntil:
+    visible: ", Christy Schumm, Australia/Sydney"

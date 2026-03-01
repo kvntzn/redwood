@@ -1,0 +1,29 @@
+appId: dev.expo.shiftcare
+---
+- runFlow:
+    file: ../setupApp.yml
+
+- tapOn: ", Christy Schumm, Australia/Sydney"
+
+- tapOn:
+    id: "undefined.calendarList.staticHeader.rightArrow"
+
+- tapOn: "Tue"
+
+- swipe:
+    start: 50%,65%
+    end: 52%,46%
+    duration: 1102
+
+- longPressOn:
+    id: "timeline.longpress"
+
+- assertVisible: "Booking Confirmation"
+- assertVisible: "Doctor: Christy Schumm"
+
+- tapOn:
+    id: "booking_confirm_add"
+
+- assertVisible: "My Bookings"
+
+- assertVisible: ", Christy Schumm"

@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-calendars/src/timeline/TimelineHours.js b/node_modules/react-native-calendars/src/timeline/TimelineHours.js
+index 38f76e5..6a114d3 100644
+--- a/node_modules/react-native-calendars/src/timeline/TimelineHours.js
++++ b/node_modules/react-native-calendars/src/timeline/TimelineHours.js
+@@ -53,7 +53,7 @@ const TimelineHours = (props) => {
+     }, [onBackgroundLongPressOut, date]);
+     return (<>
+       <TouchableWithoutFeedback onLongPress={handleBackgroundPress} onPressOut={handlePressOut}>
+-        <View style={StyleSheet.absoluteFillObject}/>
++        <View style={StyleSheet.absoluteFillObject} testID="timeline.longpress"/>
+       </TouchableWithoutFeedback>
+       {unavailableHoursBlocks.map((block, index) => (<View key={index} style={[
+                 styles.unavailableHoursBlock,

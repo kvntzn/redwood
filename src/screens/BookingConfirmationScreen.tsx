@@ -11,6 +11,7 @@ import { addBooking } from '../store/slices/booking/bookingSlice'
 import { format } from 'date-fns'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { tzName } from '@date-fns/tz'
+import { BOOKING_CONFIRM_ADD } from '../constants/testID'
 
 const BookingConfirmationScreen = ({
   route,
@@ -62,7 +63,7 @@ const BookingConfirmationScreen = ({
       ),
 
       headerRight: () => (
-        <Pressable onPress={onConfirmPress}>
+        <Pressable onPress={onConfirmPress} testID={BOOKING_CONFIRM_ADD}>
           <Ionicons name='checkmark' size={24} color={Theme.colors.text} />
         </Pressable>
       ),
