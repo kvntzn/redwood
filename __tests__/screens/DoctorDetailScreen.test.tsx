@@ -32,15 +32,15 @@ const renderFromList = () => {
 
 describe('DoctorDetailScreen', () => {
   it('should render the calendar upon navigating', async () => {
-    const { getByText, getByTestId } = renderFromList()
+    const { findByText, findByTestId } = renderFromList()
 
-    const doctor = await getByText('Christy Schumm')
+    const doctor = await findByText('Christy Schumm')
     fireEvent.press(doctor)
 
     const todayStr = new Date().toISOString().split('T')[0]
     const month = todayStr.slice(0, 7)
     expect(
-      await getByTestId(`undefined.calendarList.item_${month}.day_${todayStr}`)
+      await findByTestId(`undefined.calendarList.item_${month}.day_${todayStr}`)
     ).toBeTruthy()
   })
 })

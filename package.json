@@ -9,8 +9,11 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "e2e:test": "maestro test __e2e__/flows",
-    "e2e:test-booking": "maestro test -c __e2e__/flows/addBooking.yaml",
-    "e2e:studio": "maestro studio"
+    "e2e:add-booking": "maestro test -c __e2e__/flows/successBooking.yaml",
+    "e2e:cancel-booking": "maestro test -c __e2e__/flows/cancelBooking.yaml",
+    "e2e:duplicate-booking": "maestro test -c __e2e__/flows/duplicateBooking.yaml",
+    "e2e:studio": "maestro studio",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@date-fns/tz": "^1.4.1",
@@ -38,6 +41,7 @@
     "jest": "~29.7.0",
     "jest-expo": "~55.0.9",
     "msw": "1",
+    "patch-package": "^8.0.1",
     "reactotron-react-native": "^5.1.18",
     "reactotron-redux": "^3.2.1",
     "typescript": "~5.9.2"

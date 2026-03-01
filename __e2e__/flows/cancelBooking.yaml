@@ -1,0 +1,17 @@
+appId: dev.expo.shiftcare
+---
+- runFlow:
+    file: ../setupApp.yml
+    
+- runFlow:
+    file: addBooking.yaml
+
+- tapOn: "History"
+
+- tapOn: ", Christy Schumm"
+
+- tapOn: "Cancel"
+
+- tapOn: "Yes"
+
+- assertNotVisible: ", Christy Schumm"

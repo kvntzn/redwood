@@ -1,0 +1,11 @@
+appId: dev.expo.shiftcare
+---
+- runFlow:
+    file: ../setupApp.yml
+    
+- runFlow:
+    file: addBooking.yaml
+
+- assertVisible: "My Bookings"
+
+- assertVisible: ", Christy Schumm"

@@ -1,3 +1,18 @@
+diff --git a/node_modules/react-native-calendars/src/timeline-list/index.js b/node_modules/react-native-calendars/src/timeline-list/index.js
+index 18814e2..f8edcdc 100644
+--- a/node_modules/react-native-calendars/src/timeline-list/index.js
++++ b/node_modules/react-native-calendars/src/timeline-list/index.js
+@@ -83,8 +83,9 @@ const TimelineList = (props) => {
+         if (renderItem) {
+             return renderItem(_timelineProps, { item, index, isCurrent, isInitialPage, isToday: _isToday });
+         }
++        const {key, ...restProps} = _timelineProps
+         return (<>
+-          <Timeline {..._timelineProps}/>
++          <Timeline key={key} {...restProps}/>
+           {/* NOTE: Keeping this for easy debugging */}
+           {/* <Text style={{position: 'absolute'}}>{item}</Text>*/}
+         </>);
 diff --git a/node_modules/react-native-calendars/src/timeline/TimelineHours.js b/node_modules/react-native-calendars/src/timeline/TimelineHours.js
 index 38f76e5..6a114d3 100644
 --- a/node_modules/react-native-calendars/src/timeline/TimelineHours.js
